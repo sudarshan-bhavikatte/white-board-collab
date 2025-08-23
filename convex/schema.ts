@@ -14,6 +14,16 @@ const schema = defineSchema({
       searchField: "title",   // ✅ lowercase key
       filterFields: ["orgId"],
     }),
+
+    userFavorites: defineTable({
+        boardId: v.id("boards"),
+        userId: v.string(),
+        orgId : v.string()
+    })
+    .index("by_user_org", ["userId" , "orgId"])
+    .index("by_board", ["boardId"])
+    .index("by_user_board",["userId", "boardId"])
+    .index("by_user_board_org", ["userId", "boardId", "orgId"]) 
 });
 
 export default schema;
