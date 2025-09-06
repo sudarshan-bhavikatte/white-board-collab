@@ -22,6 +22,7 @@ interface ActionsProps {
   sideOffset?: DropdownMenuContentProps["sideOffset"];
   id: string;
   title: string;
+  modal?: boolean;
 }
 
 export default function Actions({
@@ -30,6 +31,7 @@ export default function Actions({
   sideOffset,
   id,
   title,
+  modal
 }: ActionsProps) {
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -71,13 +73,13 @@ export default function Actions({
   };
 
   return (
-    <DropdownMenu open={menuOpen} onOpenChange={setMenuOpen}>
+    <DropdownMenu open={menuOpen} onOpenChange={setMenuOpen} modal={modal}>
       <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
       <DropdownMenuContent
         onClick={(e) => e.stopPropagation()}
         side={side}
         sideOffset={sideOffset}
-        className="w-60"
+        className="w-60 z-50"
       >
         <DropdownMenuItem
           onClick={onCopyLink}
