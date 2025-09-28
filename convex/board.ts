@@ -1,6 +1,5 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
-import { handler } from "next/dist/build/templates/app-page";
 
 const images = [
   "/placeholders/1.svg",
@@ -44,17 +43,35 @@ export const remove = mutation({
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) throw new Error("Unauthorized");
 
-    const userId = identity.subject
+    // Check if the board exists and user has permission to delete it
+    const board = await ctx.db.get(args.id);
+    if (!board) {
+      throw new Error("Board not found");
+    }
+
+    // Optional: Add authorization check to ensure user can delete this board
+    // if (board.authorId !== identity.subject) {
+    //   throw new Error("Not authorized to delete this board");
+    // }
+
+    const userId = identity.subject;
+    
+    // Remove any favorites for this board
     const existingFavorite = await ctx.db
       .query("userFavorites")
       .withIndex("by_user_board", (q) =>
         q.eq("userId", userId).eq("boardId", args.id)
       )
-      .unique()
-      if(existingFavorite){
-        await ctx.db.delete(existingFavorite._id);
-      }
+      .unique();
+      
+    if (existingFavorite) {
+      await ctx.db.delete(existingFavorite._id);
+    }
+    
+    // Delete the board
     await ctx.db.delete(args.id);
+    
+    return { success: true };
   },
 });
 

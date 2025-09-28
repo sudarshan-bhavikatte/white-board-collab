@@ -1,14 +1,14 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import Info from "./info";
 import Participants from "./participants";
 import Toolbar from "./toolbar";
-import { useSelf, useStorage } from "@liveblocks/react/suspense";
+import { useOthersMapped, useSelf, useStorage } from "@liveblocks/react/suspense";
 import { CanvasMode, CanvasState, Color, LayerType, Point } from "@/types/canvas";
 import { useHistory, useCanRedo, useCanUndo, useMutation } from "@liveblocks/react/suspense";
 import { CursorsPresence } from "./cousors-presence";
-import { pointerEventToCanvasPoint } from "@/lib/utils";
+import { getRandomColor, pointerEventToCanvasPoint } from "@/lib/utils";
 import { nanoid } from "nanoid"
 import { LiveObject } from "@liveblocks/client";
 import { LayerPreview } from "./layer-preview";
@@ -108,6 +108,57 @@ export default function Canvas({ boardId }: CanvasProps) {
     history.resume()
   }, [camera, canvasState, history, insertLayer]);
 
+  const selections = useOthersMapped((other) => other.presence.selection);
+
+  const layerIdsToColorSelection = useMemo(()=>{
+    const layerIdsToColorSelection: Record<string, string> = {};
+
+    for(const user of selections){
+      const [connectionId, selection] = user;
+
+      for(const layerId of selection){
+        layerIdsToColorSelection[layerId] = getRandomColor(connectionId);
+      }
+    }
+    return layerIdsToColorSelection;
+  },[selections])
+
+  const onLayerPointerDown = useMutation((
+    {self, setMyPresence},
+    e : React.PointerEvent,
+    layerId : string
+  ) => {
+    if (
+      canvasState.mode == CanvasMode.Inserting ||
+      canvasState.mode == CanvasMode.Pencil
+    ) {
+      return;
+    }
+
+    history.pause();
+    e.stopPropagation()
+
+    const point = pointerEventToCanvasPoint(e, camera);
+
+    if(!self.presence.selection.includes(layerId)){
+      setMyPresence({
+        selection: [layerId]
+      },
+    {
+      addToHistory: true
+    })
+    setCanvasState({
+      mode: CanvasMode.Translating,
+      current: point,
+    })
+    }
+  },[
+    setCanvasState,
+    camera,
+    history,
+    canvasState.mode
+  ])
+
   return (
     <main className="h-full w-full absolute bg-neutral-100 touch-none">
       {/* Floating elements */}
@@ -131,8 +182,8 @@ export default function Canvas({ boardId }: CanvasProps) {
             <LayerPreview
               key={layerId}
               id={layerId}
-              onLayerPointerDown={() => { }}
-              selectionColor="#000"
+              onLayerPointerDown={onLayerPointerDown}
+              selectionColor={layerIdsToColorSelection[layerId]}
             />
           ))}
           <CursorsPresence />
