@@ -111,7 +111,7 @@ export const SelectionTools = memo(({ camera, setLastUsedColor }: SelectionTools
                     <Button
                         variant="board"
                         size="icon"
-                        onClick={() => deleteLayers(selection)}
+                        onClick={() => deleteLayers()}
                     >
                         <Trash2 />
                     </Button>

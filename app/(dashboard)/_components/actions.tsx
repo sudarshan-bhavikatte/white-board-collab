@@ -12,6 +12,7 @@ import { Link2, Pen, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { useApiMutation } from "@/hooks/use-api-mutation";
 import { api } from "@/convex/_generated/api";
+import { Id } from "@/convex/_generated/dataModel";
 import ConfirmModel from "./confirm-model";
 import { Button } from "@/components/ui/button";
 import { Rename } from "./rename";
@@ -50,7 +51,7 @@ export default function Actions({
   };
 
   const OnDelete = () => {
-    removeMutate({ id })
+    removeMutate({ id: id as Id<"boards"> })
       .then(() => {
         toast.success(
           <span>
@@ -64,7 +65,7 @@ export default function Actions({
   };
 
   const onUpdate = (newTitle: string) => {
-    updateMutate({ id, title: newTitle })
+    updateMutate({ id: id as Id<"boards">, title: newTitle })
       .then(() => {
         toast.success(`Updated ${title} to ${newTitle}`);
         setMenuOpen(false); // ✅ close dropdown after rename

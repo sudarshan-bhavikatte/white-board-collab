@@ -11,6 +11,7 @@ import Actions from "../actions";
 import { MoreHorizontal } from "lucide-react";
 import { useApiMutation } from "@/hooks/use-api-mutation";
 import { api } from "@/convex/_generated/api";
+import { Id } from "@/convex/_generated/dataModel";
 import { toast } from "sonner";
 
 
@@ -37,14 +38,14 @@ export default function BoardCard({
   const { userId } = useAuth();
   const authorLabel = userId === authorId ? "You" : authorName;
   const CreatedAtLabel = formatDistanceToNow(createdAt, { addSuffix: true });
-  const {mutate : favoriteMutate,pending : favoritePending} = useApiMutation(api.board.favorite)
-  const {mutate : unFavoriteMutate,pending : unFavoritePending} = useApiMutation(api.board.unFavorite)
-  const toggleFavorite = () =>{
-    if(isFavorite){
-      unFavoriteMutate({id}).catch(()=> toast.error("failed to unfavorite board"))
+  const { mutate: favoriteMutate, pending: favoritePending } = useApiMutation(api.board.favorite)
+  const { mutate: unFavoriteMutate, pending: unFavoritePending } = useApiMutation(api.board.unFavorite)
+  const toggleFavorite = () => {
+    if (isFavorite) {
+      unFavoriteMutate({ id: id as Id<'boards'> }).catch(() => toast.error("failed to unfavorite board"))
     }
-    else{
-      favoriteMutate({id , orgId}).catch(()=> toast.error("failed to favorite board"))
+    else {
+      favoriteMutate({ id: id as Id<'boards'>, orgId }).catch(() => toast.error("failed to favorite board"))
     }
   }
   return (
@@ -77,7 +78,7 @@ export default function BoardCard({
 BoardCard.Skeleton = function BoardCardSkeleton() {
   return (
     <div className="aspect-[100/127] rounded-lg overflow-hidden">
-      <Skeleton className="h-full w-full"/>
+      <Skeleton className="h-full w-full" />
     </div>
   );
 };
