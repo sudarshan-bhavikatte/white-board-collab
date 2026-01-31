@@ -39,13 +39,13 @@ const boundingBox = (layers: Layer[]): XYWH | null => {
 
 export const useSelectionBounds = () => {
     const selection = useSelf(
-        (me: any) => me.presence.selection
+        (me) => me.presence.selection
     );
 
     return useStorage(
         (root) => {
             const selectionLayers = selection.map(
-                (layerId: any) => root.layers.get(layerId)!
+                (layerId) => root.layers.get(layerId)!
             ).filter(Boolean);
 
             return boundingBox(selectionLayers);
