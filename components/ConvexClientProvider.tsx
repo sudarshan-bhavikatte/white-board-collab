@@ -3,7 +3,7 @@
 import { ReactNode } from "react";
 import { ConvexReactClient } from "convex/react";
 import { ConvexProviderWithClerk } from "convex/react-clerk";
-import { useAuth, SignInButton, UserButton } from "@clerk/nextjs";
+import { useAuth, SignInButton } from "@clerk/nextjs";
 import { Authenticated, Unauthenticated } from "convex/react";
 import { Button } from "./ui/button";
 import { LogIn } from "lucide-react";

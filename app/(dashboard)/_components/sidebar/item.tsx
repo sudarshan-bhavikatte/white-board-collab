@@ -5,14 +5,13 @@ import {
     useOrganizationList,
 } from "@clerk/nextjs"
 
-import {cn} from "@/lib/utils"
-import { useState } from "react";
+import { cn } from "@/lib/utils"
 import { Hint } from "@/components/hint";
 
 interface ItemProps {
-    id : string;
-    name : string;
-    imageUrl : string;
+    id: string;
+    name: string;
+    imageUrl: string;
 };
 
 export const Item = (
@@ -20,33 +19,33 @@ export const Item = (
         id,
         name,
         imageUrl,
-    } : ItemProps
+    }: ItemProps
 ) => {
-    const {organization} = useOrganization();
-    const {setActive} = useOrganizationList();
+    const { organization } = useOrganization();
+    const { setActive } = useOrganizationList();
 
     const isActive = organization?.id === id;
 
     const onClick = () => {
-        if(!setActive) return;
+        if (!setActive) return;
 
-        setActive({organization : id})
+        setActive({ organization: id })
     }
     return (
         <div className="aspect-square relative">
             <Hint label={name} side="right" align="start" sideOffset={18}>
-            <Image
-                fill
-                src={imageUrl}
-                alt={name}
-                onClick={onClick}
-                className={
-                    cn(
-                        "rounded-md cursor-pointer opacity-75 hover:opacity-100 transition",
-                        isActive && "opacity-100"
-                    )
-                }
-            />
+                <Image
+                    fill
+                    src={imageUrl}
+                    alt={name}
+                    onClick={onClick}
+                    className={
+                        cn(
+                            "rounded-md cursor-pointer opacity-75 hover:opacity-100 transition",
+                            isActive && "opacity-100"
+                        )
+                    }
+                />
             </Hint>
         </div>
     )

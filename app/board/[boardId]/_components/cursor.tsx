@@ -7,21 +7,21 @@ import { getRandomColor } from "@/lib/utils"
 import { useOther } from "@liveblocks/react/suspense"
 
 interface CursorProps {
-	connectionId: number, 
+    connectionId: number,
 }
 
 export const Cursor = memo((
     { connectionId }: CursorProps
 ) => {
 
-    const info = useOther(connectionId , (user) => user.info);
-    const cursor = useOther(connectionId , (user) => user.presence.cursor);
+    const info = useOther(connectionId, (user) => user.info);
+    const cursor = useOther(connectionId, (user) => user.presence.cursor);
 
     const name = info?.name || "Anonymous";
 
     if (!cursor) return null;
 
-    const {x,y} = cursor;
+    const { x, y } = cursor;
     return (
         <foreignObject
             transform={`translate(${x} ${y})`}
@@ -34,7 +34,7 @@ export const Cursor = memo((
                     fill: getRandomColor(connectionId),
                     color: getRandomColor(connectionId),
                 }
-            }/>
+            } />
             <div className="absolute left-5 px-1.5 py-0.5 rounded-md text-xs text-white font-semibold"
                 style={{
                     backgroundColor: getRandomColor(connectionId),
@@ -44,5 +44,7 @@ export const Cursor = memo((
             </div>
         </foreignObject>
     )
-    
+
 })
+
+Cursor.displayName = "Cursor";

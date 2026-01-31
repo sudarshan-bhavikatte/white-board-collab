@@ -7,11 +7,10 @@ import {
 } from "@clerk/nextjs";
 import SearchInput from "./search-input";
 import InviteButton from "./invite-button";
-import { use } from "react";
 
 export default function Navbar() {
 
-    const {organization} = useOrganization();
+  const { organization } = useOrganization();
   return (
     <div className="flex items-center gap-x-4 p-5 ">
       <div className="hidden lg:flex lg:flex-1">

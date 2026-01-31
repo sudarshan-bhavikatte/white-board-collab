@@ -10,7 +10,7 @@ import { useApiMutation } from "@/hooks/use-api-mutation";
 import { useRouter } from "next/navigation";
 export default function EmptyBoards() {
   const { organization } = useOrganization();
-  const { mutate, pending } = useApiMutation(api.board.create);
+  const { pending } = useApiMutation(api.board.create);
   const create = useMutation(api.board.create);
   const router = useRouter();
   const onClick = async () => {
@@ -19,10 +19,10 @@ export default function EmptyBoards() {
       title: `Untitled`,
       orgId: organization.id,
     }).then((id) => {
-        toast.success("board created");
-        router.push(`/board/${id}}`)
+      toast.success("board created");
+      router.push(`/board/${id}}`)
     })
-    .catch(() => toast.error("failed to create board"));
+      .catch(() => toast.error("failed to create board"));
   };
   return (
     <div className="flex flex-col items-center justify-center h-full">

@@ -1,17 +1,17 @@
 "use client";
 
-import { Circle, MousePointer, MousePointer2, Pencil, RectangleHorizontal, Redo, StickyNote, Type, Undo } from "lucide-react";
+import { Circle, MousePointer2, Pencil, RectangleHorizontal, Redo, StickyNote, Type, Undo } from "lucide-react";
 import ToolButton from "./tool-button";
 import { CanvasMode, CanvasState, LayerType } from "@/types/canvas";
 
 
 interface ToolbarProps {
   canvasState: CanvasState;
-  setCanvasState : (newState : CanvasState) => void; 
-  undo : () => void;
-  redo : () => void;
-  canUndo : boolean;
-  canRedo : boolean;
+  setCanvasState: (newState: CanvasState) => void;
+  undo: () => void;
+  redo: () => void;
+  canUndo: boolean;
+  canRedo: boolean;
 }
 
 export default function Toolbar({
@@ -25,7 +25,7 @@ export default function Toolbar({
   return (
     <div className="fixed top-1/2 -translate-y-1/2 left-2 flex flex-col gap-y-4 z-10">
       <div className="bg-white rounded-md p-1.5 flex flex-col items-center shadow-md gap-y-1">
-        <ToolButton 
+        <ToolButton
           label="Select"
           icon={MousePointer2}
           onClick={() => setCanvasState({
@@ -44,10 +44,10 @@ export default function Toolbar({
           icon={Type}
           onClick={() => setCanvasState({
             mode: CanvasMode.Inserting,
-            layerType : LayerType.Text
+            layerType: LayerType.Text
           })}
           isActive={
-            canvasState.mode === CanvasMode.Inserting && 
+            canvasState.mode === CanvasMode.Inserting &&
             canvasState.layerType === LayerType.Text
           }
 
@@ -57,10 +57,10 @@ export default function Toolbar({
           icon={StickyNote}
           onClick={() => setCanvasState({
             mode: CanvasMode.Inserting,
-            layerType : LayerType.Note
+            layerType: LayerType.Note
           })}
           isActive={
-            canvasState.mode === CanvasMode.Inserting && 
+            canvasState.mode === CanvasMode.Inserting &&
             canvasState.layerType === LayerType.Note
           }
 
@@ -70,10 +70,10 @@ export default function Toolbar({
           icon={RectangleHorizontal}
           onClick={() => setCanvasState({
             mode: CanvasMode.Inserting,
-            layerType : LayerType.Rectangle
+            layerType: LayerType.Rectangle
           })}
           isActive={
-            canvasState.mode === CanvasMode.Inserting && 
+            canvasState.mode === CanvasMode.Inserting &&
             canvasState.layerType === LayerType.Rectangle
           }
 
@@ -83,10 +83,10 @@ export default function Toolbar({
           icon={Circle}
           onClick={() => setCanvasState({
             mode: CanvasMode.Inserting,
-            layerType : LayerType.Ellipse
+            layerType: LayerType.Ellipse
           })}
           isActive={
-            canvasState.mode === CanvasMode.Inserting && 
+            canvasState.mode === CanvasMode.Inserting &&
             canvasState.layerType === LayerType.Ellipse
           }
 
@@ -98,7 +98,7 @@ export default function Toolbar({
             mode: CanvasMode.Pencil,
           })}
           isActive={
-            canvasState.mode === CanvasMode.Pencil  
+            canvasState.mode === CanvasMode.Pencil
           }
 
         />

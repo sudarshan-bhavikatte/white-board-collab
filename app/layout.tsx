@@ -4,6 +4,8 @@ import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import ConvexClientProvider from "@/components/ConvexClientProvider";
 import { Toaster } from "@/components/ui/sonner";
+import { Suspense } from "react";
+import CanvasLoading from "./board/[boardId]/_components/canvas-loading";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -29,12 +31,14 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ClerkProvider>
-          <ConvexClientProvider>
-            <Toaster />
-            {children}
-          </ConvexClientProvider>
-        </ClerkProvider>
+        <Suspense fallback={<CanvasLoading />}>
+          <ClerkProvider>
+            <ConvexClientProvider>
+              <Toaster />
+              {children}
+            </ConvexClientProvider>
+          </ClerkProvider>
+        </Suspense>
       </body>
     </html>
   );
